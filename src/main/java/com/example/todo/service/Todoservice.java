@@ -21,4 +21,24 @@ public class Todoservice {
         return todorepo.save(todo);
 
     }
+    public Todoentity patchdata(Todoentity todo){
+       
+        Todoentity existing = todorepo.findById(todo.getId())
+        .orElseThrow(() -> new RuntimeException("Todo with ID " + todo.getId() + " not found"));
+        if(todo.getTaskName()!=null){
+            existing.setTaskName(todo.getTaskName());
+
+          
+        }
+       
+            existing.setStatus(todo.getStatus());
+       
+        return todorepo.save(existing);
+
+    }
+    public void Deletetask(int id){
+        Todoentity existing = todorepo.findById(id).orElse(null);
+        todorepo.delete(existing);
+
+    }
 }

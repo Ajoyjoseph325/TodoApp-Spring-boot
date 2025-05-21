@@ -23,10 +23,10 @@ public class Todoentity {
         this.id = id;
 
     }
-    public String getTaskname() {
+    public String getTaskName() {
         return this.taskName;
     }
-    public void setTaskname(String t){
+    public void setTaskName(String t){
         this.taskName = t;
 
     }
