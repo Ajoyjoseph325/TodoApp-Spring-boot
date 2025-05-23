@@ -1,5 +1,7 @@
 package com.example.todo.entity;
 
+import java.util.Set;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -15,6 +17,9 @@ public class Users {
 
     @Column(nullable = false)
     private String password;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Todoentity> todos;
 
     // Optionally add roles, email, etc.
     private String role;
@@ -60,4 +65,5 @@ public class Users {
     public void setRole(String role) {
         this.role = role;
     }
-}
+ 
+    }

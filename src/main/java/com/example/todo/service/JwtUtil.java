@@ -26,9 +26,10 @@ private SecretKey getSigningKey() {
 }
     
 
-    public String generateToken(String username) {
+    public String generateToken(String username,Integer id) {
         return Jwts.builder()
                 .setSubject(username)
+                .claim("userId", id)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
                 .signWith(SignatureAlgorithm.HS512, getSigningKey())

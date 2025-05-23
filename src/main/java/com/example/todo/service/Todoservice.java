@@ -1,30 +1,53 @@
 package com.example.todo.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.todo.repository.Todorepository;
+import com.example.todo.repository.Userrepository;
 import com.example.todo.entity.Todoentity;
+import com.example.todo.entity.Users;
 
 @Service
 public class Todoservice {
 
     @Autowired
     Todorepository todorepo;
-    public  List<Todoentity> getAll(){
-        return todorepo.findAll();
+
+    @Autowired
+    Userrepository userrepo;
+
+    public  List<Todoentity> getAll(int userId){
+
+        return todorepo.findByUserId((long) userId);
+        // return todorepo.findAll();
 
     }    
-    public Todoentity Savetask(Todoentity todo){
+    public Todoentity Savetask(Todoentity todo,int userId){
+        Users user = userrepo.findById((long) userId)
+            .orElseThrow(() -> new RuntimeException("User not found"));
+        todo.setUser(user);
+        
         return todorepo.save(todo);
 
     }
-    public Todoentity patchdata(Todoentity todo){
+    public Todoentity patchdata(Todoentity todo,int userId){
+
+        long uid = userId;
+
+        Users user = userrepo.findById((long) userId)
+        .orElseThrow(() -> new RuntimeException("User not found"));
        
-        Todoentity existing = todorepo.findById(todo.getId())
-        .orElseThrow(() -> new RuntimeException("Todo with ID " + todo.getId() + " not found"));
+        // Todoentity existing = todorepo.findById(todo.getId())
+        // .orElseThrow(() -> new RuntimeException("Todo with ID " + todo.getId() + " not found"));
+
+        Todoentity existing = todorepo.findByIdAndUserId(todo.getId(), uid).orElseThrow(() -> new RuntimeException("Todo not found or does not belong to user"));;
+
+
         if(todo.getTaskName()!=null){
             existing.setTaskName(todo.getTaskName());
 
@@ -32,13 +55,31 @@ public class Todoservice {
         }
        
             existing.setStatus(todo.getStatus());
+            
+            existing.setUser(user);
        
         return todorepo.save(existing);
 
     }
-    public void Deletetask(int id){
+
+
+    // Delete Task
+    public void Deletetask(int id,int userId){
+
+     
+        long uid = userId;
+        
+        // Todoentity existing = todorepo.findById(id).orElse(null);
+              
+        Todoentity todoOpt= todorepo.findByIdAndUserId(id, uid).orElseThrow(() -> new RuntimeException("Todo not found or does not belong to user"));;
+        
+        todorepo.delete(todoOpt);
+
+    }
+    public Todoentity getTodo(int id){
         Todoentity existing = todorepo.findById(id).orElse(null);
-        todorepo.delete(existing);
+       return existing;
+        
 
     }
 }

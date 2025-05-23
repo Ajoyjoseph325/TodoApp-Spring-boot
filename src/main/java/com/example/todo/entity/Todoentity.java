@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 @Entity
 public class Todoentity {
    
@@ -13,6 +15,11 @@ public class Todoentity {
     private int id;
     private String taskName;
     private boolean status;
+    @ManyToOne
+    @JoinColumn(name="userid",referencedColumnName = "id")
+    private Users user;
+
+
 
 
 
@@ -37,6 +44,16 @@ public class Todoentity {
         this.status = s;
 
     }
+
+
+    public Users getUser() {
+        return user;
+    }
+
+    public void setUser(Users user) {
+        this.user = user;
+    }
+
     
 
     
