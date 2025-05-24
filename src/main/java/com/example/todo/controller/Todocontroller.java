@@ -46,8 +46,10 @@ public class Todocontroller {
             .setSigningKey(secret) // same key used to sign token
             .parseClaimsJws(token)
             .getBody();
-            Integer userId = (Integer) claims.get("userId");
-            System.out.println(userId);
+        //     Long userId = (Long) claims.get("userId");
+        //     System.out.println(userId);
+        Number userIdNum = (Number) claims.get("userId");
+        Long userId = userIdNum.longValue();
 
 
     return todoservice.getAll(userId);
@@ -64,8 +66,11 @@ public class Todocontroller {
             .parseClaimsJws(token)
             .getBody();
     
-    Integer userId = (Integer) claims.get("userId");
-    System.out.println(userId);
+//     Long userId = (Long) claims.get("userId");
+//     System.out.println(userId);
+
+        Number userIdNum = (Number) claims.get("userId");
+        Long userId = userIdNum.longValue();
 
 
 
@@ -91,8 +96,12 @@ public class Todocontroller {
             .parseClaimsJws(token)
             .getBody();
     
-    Integer userId = (Integer) claims.get("userId");
-    System.out.println(userId);
+//     Long userId = (Long) claims.get("userId");
+//     System.out.println(userId);
+
+Number userIdNum = (Number) claims.get("userId");
+Long userId = userIdNum.longValue();
+
     todo.setId(id);
     return todoservice.patchdata(todo,userId);
    }
@@ -109,9 +118,11 @@ public class Todocontroller {
             .parseClaimsJws(token)
             .getBody();
     
-    Integer userId = (Integer) claims.get("userId");
-    System.out.println(userId);
-       return todoservice.getTodo(id);
+//     Integer userId = (Integer) claims.get("userId");
+//     System.out.println(userId);
+        Number userIdNum = (Number) claims.get("userId");
+        Long userId = userIdNum.longValue();
+       return todoservice.getTodo(id,userId);
    }
    
 
@@ -127,7 +138,9 @@ public class Todocontroller {
                 .parseClaimsJws(token)
                 .getBody();
         
-                Integer userId = (Integer) claims.get("userId");
+                // Long userId = (Long) claims.get("userId");
+                Number userIdNum = (Number) claims.get("userId");
+                Long userId = userIdNum.longValue();
        
 
         todoservice.Deletetask(id,userId);

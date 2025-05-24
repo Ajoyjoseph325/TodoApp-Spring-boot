@@ -26,7 +26,7 @@ private SecretKey getSigningKey() {
 }
     
 
-    public String generateToken(String username,Integer id) {
+    public String generateToken(String username,Long id) {
         return Jwts.builder()
                 .setSubject(username)
                 .claim("userId", id)

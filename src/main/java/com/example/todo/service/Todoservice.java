@@ -21,13 +21,13 @@ public class Todoservice {
     @Autowired
     Userrepository userrepo;
 
-    public  List<Todoentity> getAll(int userId){
+    public  List<Todoentity> getAll(Long userId){
 
         return todorepo.findByUserId((long) userId);
         // return todorepo.findAll();
 
     }    
-    public Todoentity Savetask(Todoentity todo,int userId){
+    public Todoentity Savetask(Todoentity todo,Long userId){
         Users user = userrepo.findById((long) userId)
             .orElseThrow(() -> new RuntimeException("User not found"));
         todo.setUser(user);
@@ -35,7 +35,9 @@ public class Todoservice {
         return todorepo.save(todo);
 
     }
-    public Todoentity patchdata(Todoentity todo,int userId){
+
+
+    public Todoentity patchdata(Todoentity todo,Long userId){
 
         long uid = userId;
 
@@ -64,7 +66,7 @@ public class Todoservice {
 
 
     // Delete Task
-    public void Deletetask(int id,int userId){
+    public void Deletetask(int id,Long userId){
 
      
         long uid = userId;
@@ -76,9 +78,11 @@ public class Todoservice {
         todorepo.delete(todoOpt);
 
     }
-    public Todoentity getTodo(int id){
-        Todoentity existing = todorepo.findById(id).orElse(null);
-       return existing;
+    public Todoentity getTodo(int id,Long userId){
+        long uid = userId;
+        // Todoentity existing = todorepo.findById(id).orElse(null);
+        Todoentity todoOpt= todorepo.findByIdAndUserId(id, uid).orElseThrow(() -> new RuntimeException("Todo not found or does not belong to user"));;
+       return todoOpt;
         
 
     }

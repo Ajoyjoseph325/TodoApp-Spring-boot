@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.todo.entity.Users;
 import com.example.todo.repository.Userrepository;
+import com.example.todo.security.Customuserdetails;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -20,9 +21,14 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) {
         Users user = userRepository.findByUsername(username)
                 .orElseThrow();
-        return new org.springframework.security.core.userdetails.User(
-                user.getUsername(), user.getPassword(),user.getId(), new ArrayList<>()
-        );
+        // return new org.springframework.security.core.userdetails.User(
+        //         user.getUsername(), user.getPassword(), new ArrayList<>()
+        // );
+
+
+        //  new custom userdetails added
+        return new Customuserdetails(user);
+
     }
 }
 

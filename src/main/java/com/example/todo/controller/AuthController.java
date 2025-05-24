@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.todo.entity.Users;
 import com.example.todo.repository.Userrepository;
+import com.example.todo.security.Customuserdetails;
 import com.example.todo.service.JwtUtil;
 
 @RestController
@@ -52,8 +53,9 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
         );
 
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getUsername());
-        return jwtUtil.generateToken(userDetails.getUsername(),1);
+        // final UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getUsername());
+        Customuserdetails userDetails = (Customuserdetails) userDetailsService.loadUserByUsername(authRequest.getUsername());
+        return jwtUtil.generateToken(userDetails.getUsername(),userDetails.getId());
     }
 }
 
