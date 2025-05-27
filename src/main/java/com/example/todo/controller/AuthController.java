@@ -14,6 +14,7 @@ import com.example.todo.security.Customuserdetails;
 import com.example.todo.service.JwtUtil;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/auth")
 public class AuthController {
 
@@ -32,6 +33,7 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+  
     @PostMapping("/register")
     public String register(@RequestBody AuthRequest authRequest) {
         if (userrepo.findByUsername(authRequest.getUsername()).isPresent()) {
