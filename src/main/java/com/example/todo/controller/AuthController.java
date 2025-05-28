@@ -1,6 +1,9 @@
 package com.example.todo.controller;
 
+import java.util.Collections;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +15,8 @@ import com.example.todo.entity.Users;
 import com.example.todo.repository.Userrepository;
 import com.example.todo.security.Customuserdetails;
 import com.example.todo.service.JwtUtil;
+
+
 
 @RestController
 @CrossOrigin
@@ -50,14 +55,16 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody AuthRequest authRequest) {
+    public ResponseEntity<Map<String, String>> login(@RequestBody AuthRequest authRequest) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
         );
 
         // final UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getUsername());
         Customuserdetails userDetails = (Customuserdetails) userDetailsService.loadUserByUsername(authRequest.getUsername());
-        return jwtUtil.generateToken(userDetails.getUsername(),userDetails.getId());
+        String token =  jwtUtil.generateToken(userDetails.getUsername(),userDetails.getId());
+        return ResponseEntity.ok(Collections.singletonMap("token", token));
+
     }
 }
 
