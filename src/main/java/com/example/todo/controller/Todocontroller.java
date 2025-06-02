@@ -1,6 +1,8 @@
 package com.example.todo.controller;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -130,7 +132,7 @@ Long userId = userIdNum.longValue();
    
 
 @DeleteMapping("/delete/{id}")
-  public ResponseEntity<?> deleteTask(@PathVariable int id,HttpServletRequest request) {
+  public ResponseEntity<Map<String, String>> deleteTask(@PathVariable int id,HttpServletRequest request) {
     try {
 
         String authHeader = request.getHeader("Authorization");
@@ -149,9 +151,9 @@ Long userId = userIdNum.longValue();
         todoservice.Deletetask(id,userId);
 
 
-        return ResponseEntity.ok("Todo deleted successfully");
+        return ResponseEntity.ok(Collections.singletonMap("message", "delete sucess"));
     } catch (RuntimeException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        return ResponseEntity.ok(Collections.singletonMap("message", "delete failed"));
     }
 }
     
